@@ -1,0 +1,1705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dotsquares Code AI - Course Advisor Chatbot</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
+    <style>
+        :root {
+            /* Theme Color Palette: Vibrant Orange, Deep Black, Clean White */
+            --bg-base: #0a0b0e;
+            --bg-surface: #12141a;
+            --bg-card: #181b24;
+            --bg-card-hover: #212532;
+            --bg-input: #151821;
+            
+            --primary-orange: #FF6B00;
+            --primary-orange-light: #FF8526;
+            --primary-orange-dark: #E05A00;
+            --primary-orange-glow: rgba(255, 107, 0, 0.28);
+            --primary-orange-subtle: rgba(255, 107, 0, 0.12);
+            
+            --text-white: #FFFFFF;
+            --text-light: #F3F4F6;
+            --text-muted: #9CA3AF;
+            --text-dim: #6B7280;
+            
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-card: rgba(255, 255, 255, 0.06);
+            --border-focus: rgba(255, 107, 0, 0.6);
+            
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 20px;
+            --radius-full: 9999px;
+            
+            --shadow-orange: 0 8px 25px rgba(255, 107, 0, 0.35);
+            --shadow-subtle: 0 4px 20px rgba(0, 0, 0, 0.35);
+            --transition-smooth: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-light);
+            height: 100vh;
+            display: flex;
+            overflow: hidden;
+            background-image: 
+                radial-gradient(circle at 12% 18%, rgba(255, 107, 0, 0.08) 0%, transparent 45%),
+                radial-gradient(circle at 88% 82%, rgba(255, 107, 0, 0.06) 0%, transparent 45%);
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: var(--radius-full);
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-orange);
+        }
+
+        /* ------------------ LEFT SIDEBAR ------------------ */
+        .sidebar {
+            width: 320px;
+            background: var(--bg-surface);
+            border-right: 1px solid var(--border-subtle);
+            display: flex;
+            flex-direction: column;
+            padding: 24px 18px;
+            transition: var(--transition-smooth);
+            z-index: 50;
+            user-select: none;
+        }
+
+        .brand-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 22px;
+            padding-bottom: 18px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .brand-logo {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, var(--primary-orange), #FF2A00);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-white);
+            font-size: 20px;
+            box-shadow: var(--shadow-orange);
+            flex-shrink: 0;
+        }
+
+        .brand-text h1 {
+            font-size: 1.12rem;
+            font-weight: 800;
+            color: var(--text-white);
+            letter-spacing: -0.3px;
+            line-height: 1.2;
+        }
+
+        .brand-text h1 span {
+            color: var(--primary-orange);
+            background: linear-gradient(90deg, #FF6B00, #FFA756);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .brand-text p {
+            font-size: 0.74rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .new-chat-btn {
+            background: var(--primary-orange);
+            color: var(--text-white);
+            border: none;
+            border-radius: var(--radius-md);
+            padding: 12px 18px;
+            font-weight: 700;
+            font-size: 0.88rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            box-shadow: 0 4px 16px rgba(255, 107, 0, 0.32);
+            margin-bottom: 22px;
+        }
+
+        .new-chat-btn:hover {
+            background: var(--primary-orange-light);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 0, 0.45);
+        }
+
+        .sidebar-section-title {
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: var(--text-dim);
+            font-weight: 700;
+            margin-bottom: 12px;
+            padding-left: 6px;
+        }
+
+        .category-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            overflow-y: auto;
+            flex: 1;
+            padding-right: 4px;
+        }
+
+        .category-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            color: var(--text-muted);
+            font-size: 0.86rem;
+            font-weight: 500;
+            transition: var(--transition-smooth);
+            border: 1px solid transparent;
+        }
+
+        .category-item:hover {
+            background: var(--bg-card);
+            color: var(--text-white);
+            border-color: rgba(255, 107, 0, 0.25);
+            transform: translateX(4px);
+        }
+
+        .category-item.active {
+            background: var(--primary-orange-subtle);
+            color: var(--primary-orange);
+            border-color: rgba(255, 107, 0, 0.4);
+            font-weight: 600;
+        }
+
+        .category-item i {
+            font-size: 15px;
+            width: 20px;
+            text-align: center;
+            color: var(--primary-orange);
+        }
+
+        .counselor-card {
+            background: linear-gradient(145deg, #151821, #1d202d);
+            border: 1px solid rgba(255, 107, 0, 0.22);
+            border-radius: var(--radius-md);
+            padding: 14px;
+            margin-top: 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .counselor-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: var(--radius-full);
+            background: var(--primary-orange);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 15px;
+            flex-shrink: 0;
+            box-shadow: 0 0 10px rgba(255, 107, 0, 0.4);
+        }
+
+        .counselor-info {
+            flex: 1;
+        }
+
+        .counselor-info h4 {
+            font-size: 0.82rem;
+            color: var(--text-white);
+            font-weight: 700;
+        }
+
+        .counselor-info p {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        .counselor-call-btn {
+            background: transparent;
+            border: 1px solid var(--primary-orange);
+            color: var(--primary-orange);
+            padding: 6px 10px;
+            border-radius: var(--radius-sm);
+            font-size: 0.72rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .counselor-call-btn:hover {
+            background: var(--primary-orange);
+            color: #fff;
+        }
+
+        /* ------------------ MAIN CHAT DISPLAY ------------------ */
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: transparent;
+            height: 100vh;
+            position: relative;
+        }
+
+        .chat-header {
+            height: 72px;
+            background: rgba(18, 20, 26, 0.88);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-bottom: 1px solid var(--border-subtle);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 28px;
+            z-index: 20;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .menu-toggle-btn {
+            display: none;
+            background: transparent;
+            border: none;
+            color: var(--text-white);
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        .bot-status-wrap {
+            position: relative;
+        }
+
+        .bot-header-avatar {
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(135deg, #232734, #12141c);
+            border: 2px solid var(--primary-orange);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-orange);
+            font-size: 18px;
+            box-shadow: 0 0 16px rgba(255, 107, 0, 0.25);
+        }
+
+        .status-dot {
+            position: absolute;
+            bottom: -2px;
+            right: -2px;
+            width: 11px;
+            height: 11px;
+            background: #10B981;
+            border: 2px solid var(--bg-surface);
+            border-radius: 50%;
+        }
+
+        .header-bot-details h2 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-white);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .badge-verified {
+            font-size: 0.65rem;
+            background: var(--primary-orange-subtle);
+            color: var(--primary-orange);
+            border: 1px solid rgba(255, 107, 0, 0.35);
+            padding: 2px 7px;
+            border-radius: var(--radius-full);
+            font-weight: 700;
+        }
+
+        .header-bot-details p {
+            font-size: 0.74rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .pulse-circle {
+            width: 6px;
+            height: 6px;
+            background: #10B981;
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 8px #10B981;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-muted);
+            width: 38px;
+            height: 38px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .header-btn:hover {
+            background: var(--primary-orange);
+            color: var(--text-white);
+            border-color: var(--primary-orange);
+            box-shadow: var(--shadow-orange);
+        }
+
+        /* ------------------ CHAT BODY ------------------ */
+        .chat-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 28px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .welcome-container {
+            max-width: 780px;
+            margin: 10px auto 20px auto;
+            text-align: center;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .welcome-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--primary-orange-subtle);
+            border: 1px solid rgba(255, 107, 0, 0.35);
+            color: var(--primary-orange);
+            padding: 6px 14px;
+            border-radius: var(--radius-full);
+            font-size: 0.78rem;
+            font-weight: 700;
+            margin-bottom: 14px;
+        }
+
+        .welcome-title {
+            font-size: 1.85rem;
+            font-weight: 800;
+            color: var(--text-white);
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .welcome-title span {
+            color: var(--primary-orange);
+            background: linear-gradient(90deg, #FF6B00, #FFA756);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .welcome-desc {
+            font-size: 0.92rem;
+            color: var(--text-muted);
+            max-width: 580px;
+            margin: 0 auto 24px auto;
+            line-height: 1.5;
+        }
+
+        .quick-prompts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 12px;
+            text-align: left;
+        }
+
+        .prompt-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 14px 16px;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .prompt-card:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--primary-orange);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.45);
+        }
+
+        .prompt-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--primary-orange-subtle);
+            color: var(--primary-orange);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            flex-shrink: 0;
+        }
+
+        .prompt-info h5 {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-white);
+            margin-bottom: 3px;
+        }
+
+        .prompt-info p {
+            font-size: 0.74rem;
+            color: var(--text-muted);
+            line-height: 1.35;
+        }
+
+        /* ------------------ MESSAGE BUBBLES ------------------ */
+        .message-row {
+            display: flex;
+            gap: 12px;
+            max-width: 85%;
+            animation: messageIn 0.3s ease-out forwards;
+        }
+
+        @keyframes messageIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .message-row.bot { align-self: flex-start; }
+        .message-row.user { align-self: flex-end; flex-direction: row-reverse; }
+
+        .msg-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .bot .msg-avatar {
+            background: linear-gradient(135deg, #1e2230, #14161f);
+            color: var(--primary-orange);
+            border: 1px solid rgba(255, 107, 0, 0.4);
+        }
+
+        .user .msg-avatar {
+            background: var(--primary-orange);
+            color: var(--text-white);
+            box-shadow: 0 4px 12px rgba(255, 107, 0, 0.35);
+        }
+
+        .msg-content-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .msg-bubble {
+            padding: 14px 18px;
+            border-radius: var(--radius-md);
+            font-size: 0.9rem;
+            line-height: 1.55;
+            position: relative;
+            word-wrap: break-word;
+        }
+
+        .bot .msg-bubble {
+            background: var(--bg-card);
+            color: var(--text-light);
+            border: 1px solid var(--border-subtle);
+            border-top-left-radius: 4px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+        }
+
+        .user .msg-bubble {
+            background: linear-gradient(135deg, #FF6B00, #E05A00);
+            color: var(--text-white);
+            border-top-right-radius: 4px;
+            box-shadow: 0 4px 16px rgba(255, 107, 0, 0.35);
+            font-weight: 500;
+        }
+
+        .msg-time {
+            font-size: 0.68rem;
+            color: var(--text-dim);
+            padding: 0 4px;
+        }
+
+        .user .msg-time { text-align: right; }
+
+        /* ------------------ COURSE CARDS IN CHAT ------------------ */
+        .courses-display-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 14px;
+            margin-top: 14px;
+        }
+
+        .course-card-inner {
+            background: #13151e;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            transition: var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .course-card-inner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--primary-orange);
+            opacity: 0.85;
+        }
+
+        .course-card-inner:hover {
+            border-color: rgba(255, 107, 0, 0.45);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        }
+
+        .course-badge-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .course-tag {
+            font-size: 0.68rem;
+            background: var(--primary-orange-subtle);
+            color: var(--primary-orange);
+            padding: 3px 8px;
+            border-radius: var(--radius-full);
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .course-duration {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .course-title {
+            font-size: 0.98rem;
+            font-weight: 700;
+            color: var(--text-white);
+            margin-bottom: 6px;
+        }
+
+        .course-desc {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            line-height: 1.45;
+        }
+
+        .course-skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-bottom: 14px;
+        }
+
+        .skill-pill {
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text-light);
+            font-size: 0.68rem;
+            padding: 2px 7px;
+            border-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .course-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-course-primary {
+            background: var(--primary-orange);
+            color: #fff;
+            border: none;
+            padding: 7px 12px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            flex: 1;
+            transition: var(--transition-smooth);
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .btn-course-primary:hover {
+            background: var(--primary-orange-light);
+            box-shadow: 0 4px 12px rgba(255, 107, 0, 0.35);
+        }
+
+        .btn-course-outline {
+            background: transparent;
+            color: var(--text-light);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            padding: 7px 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .btn-course-outline:hover {
+            border-color: var(--primary-orange);
+            color: var(--primary-orange);
+        }
+
+        /* ------------------ TYPING INDICATOR ------------------ */
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 12px 18px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            width: fit-content;
+        }
+
+        .typing-dot {
+            width: 7px;
+            height: 7px;
+            background: var(--primary-orange);
+            border-radius: 50%;
+            animation: bounce 1.4s infinite ease-in-out;
+        }
+
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+            40% { transform: scale(1.1); opacity: 1; }
+        }
+
+        /* ------------------ FOOTER INPUT ------------------ */
+        .chat-footer {
+            padding: 14px 28px 20px 28px;
+            background: linear-gradient(180deg, transparent 0%, rgba(10, 11, 14, 0.96) 40%);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .suggestion-chips-bar {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+        }
+
+        .suggestion-chip {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-muted);
+            padding: 6px 13px;
+            border-radius: var(--radius-full);
+            font-size: 0.76rem;
+            font-weight: 500;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .suggestion-chip:hover {
+            background: var(--primary-orange-subtle);
+            color: var(--primary-orange);
+            border-color: rgba(255, 107, 0, 0.4);
+            transform: translateY(-1px);
+        }
+
+        .input-bar-container {
+            background: var(--bg-input);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 8px 12px 8px 18px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+            transition: var(--transition-smooth);
+        }
+
+        .input-bar-container:focus-within {
+            border-color: var(--primary-orange);
+            box-shadow: 0 0 0 3px var(--primary-orange-glow);
+        }
+
+        .chat-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--text-white);
+            font-size: 0.92rem;
+            outline: none;
+            resize: none;
+        }
+
+        .chat-input::placeholder {
+            color: var(--text-dim);
+        }
+
+        .input-action-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 16px;
+            transition: var(--transition-smooth);
+        }
+
+        .input-action-btn:hover {
+            color: var(--primary-orange);
+            background: var(--primary-orange-subtle);
+        }
+
+        .send-btn {
+            background: var(--primary-orange);
+            color: var(--text-white);
+            border: none;
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 16px;
+            transition: var(--transition-smooth);
+            box-shadow: 0 4px 14px rgba(255, 107, 0, 0.4);
+        }
+
+        .send-btn:hover {
+            background: var(--primary-orange-light);
+            transform: scale(1.04);
+            box-shadow: 0 6px 18px rgba(255, 107, 0, 0.55);
+        }
+
+        .footer-note {
+            text-align: center;
+            font-size: 0.68rem;
+            color: var(--text-dim);
+        }
+
+        .footer-note span {
+            color: var(--primary-orange);
+            font-weight: 600;
+        }
+
+        /* ------------------ MODAL DIRECTORY ------------------ */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.78);
+            backdrop-filter: blur(8px);
+            z-index: 100;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: var(--bg-surface);
+            border: 1px solid rgba(255, 107, 0, 0.3);
+            border-radius: var(--radius-lg);
+            width: 100%;
+            max-width: 720px;
+            max-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+            overflow: hidden;
+            animation: modalPop 0.25s ease-out;
+        }
+
+        @keyframes modalPop {
+            from { transform: scale(0.95); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-header {
+            padding: 18px 24px;
+            border-bottom: 1px solid var(--border-subtle);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-header h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-white);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .modal-close-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .modal-close-btn:hover {
+            color: var(--primary-orange);
+        }
+
+        .modal-body {
+            padding: 20px 24px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        /* ------------------ RESPONSIVE BREAKPOINTS ------------------ */
+        @media (max-width: 900px) {
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: -330px;
+                height: 100%;
+                box-shadow: 10px 0 30px rgba(0, 0, 0, 0.7);
+            }
+            .sidebar.open { left: 0; }
+            .menu-toggle-btn { display: block; }
+            .message-row { max-width: 95%; }
+            .chat-body { padding: 18px; }
+            .chat-footer { padding: 10px 18px 16px 18px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- LEFT NAVIGATION & COURSES SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+        <div class="brand-header">
+            <div class="brand-logo">
+                <i class="fa-solid fa-code"></i>
+            </div>
+            <div class="brand-text">
+                <h1>Dotsquares <span>Code AI</span></h1>
+                <p>Course Advisor & Tech Academy</p>
+            </div>
+        </div>
+
+        <button class="new-chat-btn" id="newChatBtn">
+            <i class="fa-solid fa-plus"></i>
+            <span>New Consultation</span>
+        </button>
+
+        <div class="sidebar-section-title">Explore Categories</div>
+        <ul class="category-list">
+            <li class="category-item active" data-category="all">
+                <i class="fa-solid fa-border-all"></i>
+                <span>All Tech Programs</span>
+            </li>
+            <li class="category-item" data-category="web">
+                <i class="fa-brands fa-react"></i>
+                <span>Full-Stack Web (MERN / Next.js)</span>
+            </li>
+            <li class="category-item" data-category="ai">
+                <i class="fa-solid fa-brain"></i>
+                <span>AI, GenAI & Machine Learning</span>
+            </li>
+            <li class="category-item" data-category="python">
+                <i class="fa-brands fa-python"></i>
+                <span>Python & Data Analytics</span>
+            </li>
+            <li class="category-item" data-category="mobile">
+                <i class="fa-solid fa-mobile-screen-button"></i>
+                <span>Mobile Apps (Flutter & React Native)</span>
+            </li>
+            <li class="category-item" data-category="cloud">
+                <i class="fa-solid fa-cloud"></i>
+                <span>Cloud & DevOps (AWS / K8s)</span>
+            </li>
+            <li class="category-item" data-category="uiux">
+                <i class="fa-solid fa-palette"></i>
+                <span>UI/UX & Product Design</span>
+            </li>
+            <li class="category-item" data-category="qa">
+                <i class="fa-solid fa-vial-circle-check"></i>
+                <span>QA & Automation Testing</span>
+            </li>
+        </ul>
+
+        <div class="counselor-card">
+            <div class="counselor-avatar">
+                <i class="fa-solid fa-headset"></i>
+            </div>
+            <div class="counselor-info">
+                <h4>Need 1-on-1 Help?</h4>
+                <p>Talk to Senior Mentors</p>
+            </div>
+            <button class="counselor-call-btn" id="counselorBtn">Connect</button>
+        </div>
+    </aside>
+
+    <!-- MAIN CHAT CONTAINER -->
+    <main class="chat-container">
+        <header class="chat-header">
+            <div class="header-left">
+                <button class="menu-toggle-btn" id="menuToggleBtn" title="Open Sidebar">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <div class="bot-status-wrap">
+                    <div class="bot-header-avatar">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <div class="status-dot"></div>
+                </div>
+                <div class="header-bot-details">
+                    <h2>Dotsquares Code AI <span class="badge-verified"><i class="fa-solid fa-check"></i> Official</span></h2>
+                    <p><span class="pulse-circle"></span> Online • Course Guidance, Syllabus & Admissions</p>
+                </div>
+            </div>
+
+            <div class="header-actions">
+                <button class="header-btn" id="catalogModalBtn" title="Open Course Catalog">
+                    <i class="fa-solid fa-book-open"></i>
+                </button>
+                <button class="header-btn" id="clearChatBtn" title="Reset Conversation">
+                    <i class="fa-solid fa-rotate-right"></i>
+                </button>
+                <button class="header-btn" id="fullscreenBtn" title="Fullscreen Mode">
+                    <i class="fa-solid fa-expand"></i>
+                </button>
+            </div>
+        </header>
+
+        <div class="chat-body" id="chatBody">
+            <div class="welcome-container" id="welcomeContainer">
+                <div class="welcome-badge">
+                    <i class="fa-solid fa-sparkles"></i> AI-Powered Course Counselor
+                </div>
+                <h2 class="welcome-title">Master High-Demand Tech at <span>Dotsquares</span></h2>
+                <p class="welcome-desc">
+                    Get accurate insights on syllabus modules, course durations, industry capstone projects, 100% placement assurance, and batch timings.
+                </p>
+
+                <div class="quick-prompts-grid">
+                    <div class="prompt-card" data-prompt="What are the top web development courses available at Dotsquares?">
+                        <div class="prompt-icon"><i class="fa-solid fa-laptop-code"></i></div>
+                        <div class="prompt-info">
+                            <h5>Web Development</h5>
+                            <p>MERN, Django, Full-Stack</p>
+                        </div>
+                    </div>
+                    <div class="prompt-card" data-prompt="Tell me about the AI & Machine Learning course syllabus and duration.">
+                        <div class="prompt-icon"><i class="fa-solid fa-brain"></i></div>
+                        <div class="prompt-info">
+                            <h5>AI & Data Science</h5>
+                            <p>GenAI, Deep Learning & LLMs</p>
+                        </div>
+                    </div>
+                    <div class="prompt-card" data-prompt="What placement support and certifications does Dotsquares provide?">
+                        <div class="prompt-icon"><i class="fa-solid fa-award"></i></div>
+                        <div class="prompt-info">
+                            <h5>Placement & Certificates</h5>
+                            <p>100% Job Help & Credentials</p>
+                        </div>
+                    </div>
+                    <div class="prompt-card" data-prompt="Can I get details on course fees and batch timings?">
+                        <div class="prompt-icon"><i class="fa-solid fa-clock"></i></div>
+                        <div class="prompt-info">
+                            <h5>Fees & Batches</h5>
+                            <p>Weekend & Weekday options</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="chat-footer">
+            <div class="suggestion-chips-bar">
+                <button class="suggestion-chip" data-query="MERN Stack Course details">
+                    <i class="fa-brands fa-react"></i> MERN Stack
+                </button>
+                <button class="suggestion-chip" data-query="AI and Generative AI syllabus">
+                    <i class="fa-solid fa-brain"></i> GenAI & ML
+                </button>
+                <button class="suggestion-chip" data-query="Cloud & DevOps Engineering course">
+                    <i class="fa-solid fa-cloud"></i> DevOps & AWS
+                </button>
+                <button class="suggestion-chip" data-query="Flutter Mobile App Development">
+                    <i class="fa-solid fa-mobile"></i> Flutter Apps
+                </button>
+                <button class="suggestion-chip" data-query="UI/UX Design Masterclass">
+                    <i class="fa-solid fa-pen-nib"></i> UI/UX Design
+                </button>
+                <button class="suggestion-chip" data-query="100% Placement assistance details">
+                    <i class="fa-solid fa-briefcase"></i> Placement Support
+                </button>
+            </div>
+
+            <div class="input-bar-container">
+                <button class="input-action-btn" id="attachBtn" title="Attach Profile / Resume">
+                    <i class="fa-solid fa-paperclip"></i>
+                </button>
+                <input 
+                    type="text" 
+                    class="chat-input" 
+                    id="userInput" 
+                    placeholder="Ask Dotsquares Code AI about courses, syllabus, fees, duration..."
+                    autocomplete="off"
+                >
+                <button class="input-action-btn" id="voiceBtn" title="Voice Prompt">
+                    <i class="fa-solid fa-microphone"></i>
+                </button>
+                <button class="send-btn" id="sendBtn" title="Send Query">
+                    <i class="fa-solid fa-paper-plane"></i>
+                </button>
+            </div>
+
+            <div class="footer-note">
+                Powered by <span>Dotsquares Code AI</span> • Official Learning Platform & Career Accelerator
+            </div>
+        </footer>
+    </main>
+
+    <!-- FULL COURSE CATALOG MODAL -->
+    <div class="modal-overlay" id="catalogModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-graduation-cap" style="color: var(--primary-orange);"></i> Complete Dotsquares Course Directory</h3>
+                <button class="modal-close-btn" id="closeModalBtn"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body" id="modalCoursesList"></div>
+        </div>
+    </div>
+
+    <!-- SCRIPT ENGINE -->
+    <script>
+        const coursesData = [
+            {
+                id: "mern",
+                category: "web",
+                name: "Full-Stack Web Development (MERN & Next.js)",
+                duration: "4 to 6 Months",
+                level: "Beginner to Advanced",
+                tag: "High Demand",
+                skills: ["React 18+", "Next.js", "Node.js", "Express", "MongoDB", "TypeScript", "Redux Toolkit", "REST & GraphQL"],
+                description: "Master enterprise-grade web development from HTML/CSS fundamentals through full-stack architecture, microservices, and live client projects.",
+                fees: "EMI starting at affordable monthly rates • Scholarship eligibility test",
+                career: "Full Stack Developer, React Engineer, Node.js Specialist"
+            },
+            {
+                id: "ai_ml",
+                category: "ai",
+                name: "AI, Machine Learning & Generative AI",
+                duration: "6 Months",
+                level: "Intermediate to Pro",
+                tag: "Future Tech 2026",
+                skills: ["Python", "PyTorch", "TensorFlow", "NLP", "LangChain", "LLM Fine-tuning", "Vector Databases", "Computer Vision"],
+                description: "Comprehensive artificial intelligence bootcamp covering math foundations, machine learning algorithms, deep neural nets, and building production GenAI & RAG systems.",
+                fees: "Scholarship discounts available for meritorious candidates",
+                career: "AI Engineer, Machine Learning Engineer, Data Scientist"
+            },
+            {
+                id: "python_ds",
+                category: "python",
+                name: "Python Full-Stack & Data Analytics",
+                duration: "4 Months",
+                level: "Beginner to Pro",
+                tag: "Industry Favorite",
+                skills: ["Python 3", "Django", "FastAPI", "Pandas", "NumPy", "SQL / PostgreSQL", "PowerBI", "Matplotlib"],
+                description: "Build robust web backends with Django and FastAPI combined with hands-on business intelligence dashboards, automated reporting, and predictive data pipelines.",
+                fees: "Flexible instalment plans with zero interest options",
+                career: "Python Developer, Backend Engineer, Data Analyst"
+            },
+            {
+                id: "mobile_flutter",
+                category: "mobile",
+                name: "Cross-Platform Mobile Apps (Flutter & React Native)",
+                duration: "3 to 4 Months",
+                level: "All Skill Levels",
+                tag: "Job Ready",
+                skills: ["Dart", "Flutter SDK", "Bloc / Riverpod", "React Native", "Firebase", "Camera & GPS APIs", "App Store / Play Store"],
+                description: "Build native 60fps iOS and Android applications from a single codebase with clean architectural patterns, background notifications, and monetization integration.",
+                fees: "Special early registration fee structures available",
+                career: "Mobile App Developer, Flutter Engineer, iOS/Android Lead"
+            },
+            {
+                id: "devops_cloud",
+                category: "cloud",
+                name: "Cloud Computing & DevOps Engineering",
+                duration: "4 Months",
+                level: "Intermediate",
+                tag: "High Salary Track",
+                skills: ["AWS Core Services", "Docker", "Kubernetes", "Terraform", "GitHub Actions", "Jenkins", "Linux / Bash"],
+                description: "Design automated CI/CD deployment pipelines, manage containerized clusters on Kubernetes, implement Infrastructure as Code, and master AWS cloud architecture.",
+                fees: "Includes AWS certification prep voucher & lab credits",
+                career: "DevOps Engineer, Cloud Architect, Site Reliability Engineer"
+            },
+            {
+                id: "ui_ux",
+                category: "uiux",
+                name: "UI/UX & Product Design Masterclass",
+                duration: "3 Months",
+                level: "Beginner to Intermediate",
+                tag: "Creative Tech",
+                skills: ["Figma", "Design Systems", "User Research", "Wireframing", "Micro-interactions", "Design Tokens", "Usability Testing"],
+                description: "Learn user-centric design methodologies, rapid prototyping, and high-fidelity interfaces. Graduate with 2 polished enterprise case studies for your Behance/Dribbble portfolio.",
+                fees: "Tool licenses and design asset libraries included",
+                career: "Product Designer, UI/UX Designer, UX Researcher"
+            },
+            {
+                id: "qa_automation",
+                category: "qa",
+                name: "Software QA & Test Automation Mastery",
+                duration: "3 Months",
+                level: "Beginner to Intermediate",
+                tag: "Quick Placement",
+                skills: ["Selenium WebDriver", "Java / Python", "TestNG", "Postman API Testing", "Cucumber BDD", "Jira", "Performance Testing"],
+                description: "Gain proficiency in automated regression suites, API verification, manual test design, bug tracking lifecycles, and continuous quality integration in agile sprints.",
+                fees: "Corporate bundle discounts for groups & freshers",
+                career: "Automation QA Engineer, SDET, Quality Analyst"
+            }
+        ];
+
+        const chatBody = document.getElementById('chatBody');
+        const userInput = document.getElementById('userInput');
+        const sendBtn = document.getElementById('sendBtn');
+        const clearChatBtn = document.getElementById('clearChatBtn');
+        const newChatBtn = document.getElementById('newChatBtn');
+        const welcomeContainer = document.getElementById('welcomeContainer');
+        const sidebar = document.getElementById('sidebar');
+        const menuToggleBtn = document.getElementById('menuToggleBtn');
+        const fullscreenBtn = document.getElementById('fullscreenBtn');
+        const catalogModalBtn = document.getElementById('catalogModalBtn');
+        const catalogModal = document.getElementById('catalogModal');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const modalCoursesList = document.getElementById('modalCoursesList');
+        const counselorBtn = document.getElementById('counselorBtn');
+        const voiceBtn = document.getElementById('voiceBtn');
+        const attachBtn = document.getElementById('attachBtn');
+
+        menuToggleBtn.addEventListener('click', () => sidebar.classList.toggle('open'));
+        document.addEventListener('click', (e) => {
+            if (window.innerWidth <= 900 && !sidebar.contains(e.target) && !menuToggleBtn.contains(e.target)) {
+                sidebar.classList.remove('open');
+            }
+        });
+
+        fullscreenBtn.addEventListener('click', () => {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => console.log(err));
+                fullscreenBtn.innerHTML = '<i class="fa-solid fa-compress"></i>';
+            } else {
+                document.exitFullscreen();
+                fullscreenBtn.innerHTML = '<i class="fa-solid fa-expand"></i>';
+            }
+        });
+
+        function populateCatalog() {
+            modalCoursesList.innerHTML = '';
+            coursesData.forEach(c => {
+                const item = document.createElement('div');
+                item.className = 'course-card-inner';
+                item.innerHTML = `
+                    <div class="course-badge-row">
+                        <span class="course-tag">${c.tag}</span>
+                        <span class="course-duration"><i class="fa-regular fa-clock"></i> ${c.duration}</span>
+                    </div>
+                    <h4 class="course-title">${c.name}</h4>
+                    <p class="course-desc">${c.description}</p>
+                    <div class="course-skills">
+                        ${c.skills.map(s => `<span class="skill-pill">${s}</span>`).join('')}
+                    </div>
+                    <div class="course-actions">
+                        <button class="btn-course-primary" onclick="askAboutCourse('${c.name}')">Ask AI Advisor</button>
+                        <button class="btn-course-outline" onclick="requestSyllabus('${c.name}')">Get Syllabus</button>
+                    </div>
+                `;
+                modalCoursesList.appendChild(item);
+            });
+        }
+        populateCatalog();
+
+        catalogModalBtn.addEventListener('click', () => catalogModal.style.display = 'flex');
+        closeModalBtn.addEventListener('click', () => catalogModal.style.display = 'none');
+        window.addEventListener('click', (e) => {
+            if (e.target === catalogModal) catalogModal.style.display = 'none';
+        });
+
+        function getCurrentTime() {
+            const now = new Date();
+            let hours = now.getHours();
+            let minutes = now.getMinutes();
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12 || 12;
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            return `${hours}:${minutes} ${ampm}`;
+        }
+
+        function appendMessage(sender, text, htmlContent = null) {
+            if (welcomeContainer && welcomeContainer.style.display !== 'none') {
+                welcomeContainer.style.display = 'none';
+            }
+
+            const row = document.createElement('div');
+            row.className = `message-row ${sender}`;
+
+            const avatar = document.createElement('div');
+            avatar.className = 'msg-avatar';
+            avatar.innerHTML = sender === 'user' ? '<i class="fa-solid fa-user"></i>' : '<i class="fa-solid fa-robot"></i>';
+
+            const contentWrap = document.createElement('div');
+            contentWrap.className = 'msg-content-wrap';
+
+            const bubble = document.createElement('div');
+            bubble.className = 'msg-bubble';
+
+            if (htmlContent) {
+                bubble.innerHTML = htmlContent;
+            } else {
+                bubble.textContent = text;
+            }
+
+            const time = document.createElement('div');
+            time.className = 'msg-time';
+            time.textContent = getCurrentTime();
+
+            contentWrap.appendChild(bubble);
+            contentWrap.appendChild(time);
+            row.appendChild(avatar);
+            row.appendChild(contentWrap);
+            chatBody.appendChild(row);
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }
+
+        function showTypingIndicator() {
+            const indicator = document.createElement('div');
+            indicator.className = 'message-row bot';
+            indicator.id = 'activeTypingIndicator';
+
+            const avatar = document.createElement('div');
+            avatar.className = 'msg-avatar';
+            avatar.innerHTML = '<i class="fa-solid fa-robot"></i>';
+
+            const bubble = document.createElement('div');
+            bubble.className = 'typing-indicator';
+            bubble.innerHTML = `
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+            `;
+
+            indicator.appendChild(avatar);
+            indicator.appendChild(bubble);
+            chatBody.appendChild(indicator);
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }
+
+        function removeTypingIndicator() {
+            const indicator = document.getElementById('activeTypingIndicator');
+            if (indicator) indicator.remove();
+        }
+
+        function generateAIResponse(query) {
+            const q = query.toLowerCase();
+
+            if (q.includes('mern') || q.includes('web dev') || q.includes('react') || q.includes('javascript') || q.includes('node') || q.includes('full stack')) {
+                const course = coursesData.find(c => c.id === 'mern');
+                return {
+                    text: `Dotsquares presents our industry-benchmarked **${course.name}** program designed to transition candidates into production-ready software engineers:`,
+                    cards: [course],
+                    extra: `
+                        <div style="margin-top: 10px; font-size: 0.85rem; line-height: 1.55;">
+                            <strong style="color: var(--primary-orange);">🚀 Key Program Highlights:</strong><br>
+                            • <strong>Duration:</strong> 4 to 6 Months with weekday or weekend batches.<br>
+                            • <strong>Live Industrial Projects:</strong> 5+ enterprise applications including E-commerce platforms, Realtime chat & SaaS dashboards.<br>
+                            • <strong>Modern Stack:</strong> Next.js 14, React 18, Node.js, Express, MongoDB, Redux Toolkit & TypeScript.<br>
+                            • <strong>Career Outcome:</strong> Direct access to Dotsquares hiring partner network and mock interview bootcamps.
+                        </div>
+                    `
+                };
+            }
+
+            if (q.includes('ai') || q.includes('machine learning') || q.includes('ml') || q.includes('deep learning') || q.includes('llm') || q.includes('genai') || q.includes('generative')) {
+                const course = coursesData.find(c => c.id === 'ai_ml');
+                return {
+                    text: `Step into future computing with our flagship **${course.name}** course:`,
+                    cards: [course],
+                    extra: `
+                        <div style="margin-top: 10px; font-size: 0.85rem; line-height: 1.55;">
+                            <strong style="color: var(--primary-orange);">🤖 Advanced Curriculum Highlights:</strong><br>
+                            • <strong>Math & Foundations:</strong> Linear Algebra, Probability, Calculus & Vector Math.<br>
+                            • <strong>Deep Learning & CV:</strong> CNNs, RNNs, Transformers with PyTorch & Hugging Face.<br>
+                            • <strong>Generative AI & LLMs:</strong> Prompt Engineering, LangChain, RAG architectures, Vector DBs (Chroma/Pinecone).<br>
+                            • <strong>Capstones:</strong> Multi-modal AI assistants and custom enterprise fine-tuned models.
+                        </div>
+                    `
+                };
+            }
+
+            if (q.includes('python') || q.includes('data science') || q.includes('data analytic') || q.includes('django')) {
+                const course = coursesData.find(c => c.id === 'python_ds');
+                return {
+                    text: `Our **${course.name}** curriculum balances scalable backend engineering with modern data analytics:`,
+                    cards: [course],
+                    extra: `
+                        <div style="margin-top: 10px; font-size: 0.85rem; line-height: 1.55;">
+                            <strong style="color: var(--primary-orange);">📊 What You Master:</strong><br>
+                            • Object-Oriented Python 3 and robust web architectures using Django & FastAPI.<br>
+                            • Exploratory Data Analysis (EDA) using Pandas, NumPy, and Seaborn.<br>
+                            • Interactive Business Intelligence dashboards using PowerBI & SQL optimization.<br>
+                            • <strong>Duration:</strong> 4 Months • Weekday & Weekend slots available.
+                        </div>
+                    `
+                };
+            }
+
+            if (q.includes('mobile') || q.includes('flutter') || q.includes('app') || q.includes('dart') || q.includes('android') || q.includes('ios')) {
+                const course = coursesData.find(c => c.id === 'mobile_flutter');
+                return {
+                    text: `Build beautiful, fluid native apps with our **${course.name}** program:`,
+                    cards: [course],
+                    extra: `
+                        <div style="margin-top: 10px; font-size: 0.85rem; line-height: 1.55;">
+                            <strong style="color: var(--primary-orange);">📱 Real-World Mobile Engineering:</strong><br>
+                            • Single codebase running on iOS, Android and the Web.<br>
+                            • Enterprise state management using Bloc and Riverpod patterns.<br>
+                            • Firebase Authentication, Cloud Firestore, push notifications, and payment gateways.<br>
+                            • Guidance on deployment to Apple App Store and Google Play Store.
+                        </div>
+                    `
+                };
+            }
+
+            if (q.includes('cloud') || q.includes('devops') || q.includes('aws') || q.includes('docker') || q.includes('kubernetes') || q.includes('k8s')) {
+                const course = coursesData.find(c => c.id === 'devops_cloud');
+                return {
+                    text: `Scale and automate modern software systems with **${course.name}**:`,
+                    cards: [course],
+                    extra: `
+                        <div style="margin-top: 10px; font-size: 0.85rem; line-height: 1.55;">
+                            <strong style="color: var(--primary-orange);">☁️ Curriculum Core:</strong><br>
+                            • AWS Cloud Infrastructure (EC2, S3, RDS, VPC, IAM, Serverless Lambda).<br>
+                            • Docker containerization and Kubernetes orchestration at scale.<br>
+                            • Automated CI/CD pipelines with GitHub Actions and Terraform IaC.<br>
+                            • Direct readiness for AWS Solutions Architect Certification.
+                        </div>
+                    `
+                };
+            }
+
+            if (q.includes('ui') || q.includes('ux') || q.includes('design') || q.includes('figma')) {
+                const course = coursesData.find(c => c.id === 'ui_ux');
+                return {
+                    text: `Craft intuitive digital user experiences in our **${course.name}**:`,
+                    cards: [course],
+                    extra: `
+                        <div style="margin-top: 10px; font-size: 0.85rem; line-height: 1.55;">
+                            <strong style="color: var(--primary-orange);">🎨 Highlights:</strong><br>
+                            • End-to-end design thinking: User Research, Personas, User Journeys, Wireframes.<br>
+                            • Advanced Figma design systems, tokens, components, and animated prototypes.<br>
+                            • Complete portfolio preparation with 2 live UX case studies.
+                        </div>
+                    `
+                };
+            }
+
+            if (q.includes('placement') || q.includes('job') || q.includes('intern') || q.includes('career') || q.includes('salary') || q.includes('hiring')) {
+                return {
+                    text: `### 💼 Dotsquares 100% Placement & Career Launchpad\n\nAt Dotsquares, your learning journey concludes with career success:`,
+                    extra: `
+                        <div style="background: rgba(255, 107, 0, 0.08); border-left: 3px solid var(--primary-orange); padding: 14px; border-radius: 8px; margin-top: 12px; font-size: 0.86rem;">
+                            <p><strong>🎯 Our Guaranteed Career Support includes:</strong></p>
+                            <ul style="margin-left: 20px; margin-top: 8px; line-height: 1.6;">
+                                <li><strong>1-on-1 Mock Interviews:</strong> Technical coding rounds and architecture evaluations with Dotsquares Team Leads.</li>
+                                <li><strong>ATS-Optimized Resumes & Portfolios:</strong> Professional LinkedIn branding and GitHub showcase curation.</li>
+                                <li><strong>Direct Placement Drives:</strong> Opportunities within Dotsquares internal delivery centers and 120+ partnered IT firms.</li>
+                                <li><strong>Internship Certificate:</strong> Verifiable industry experience certificate on live projects.</li>
+                            </ul>
+                            <div style="margin-top: 14px;">
+                                <button class="btn-course-primary" style="display:inline-block; width:auto; padding:8px 18px;" onclick="connectCounselor()">
+                                    <i class="fa-solid fa-phone"></i> Book Free Career Counseling Call
+                                </button>
+                            </div>
+                        </div>
+                    `
+                };
+            }
+
+            if (q.includes('fee') || q.includes('cost') || q.includes('price') || q.includes('duration') || q.includes('batch') || q.includes('timing') || q.includes('schedule')) {
+                return {
+                    text: `### ⏱️ Flexible Batches & Transparent Fee Details\n\nWe structure programs to accommodate working professionals and full-time college students:`,
+                    extra: `
+                        <div style="margin-top: 10px; font-size: 0.85rem; line-height: 1.6;">
+                            • <strong>Batch Formats:</strong> Weekday Fast-Track (Monday to Friday, 2 hrs/day) and Weekend Intensive (Saturday & Sunday, 4 hrs/day).<br>
+                            • <strong>Learning Modes:</strong> In-person classroom training + Interactive live online sessions with recorded access.<br>
+                            • <strong>Duration:</strong> 3 Months (Certifications) to 6 Months (Comprehensive Full-Stack & AI Masters).<br>
+                            • <strong>Fee Assistance:</strong> No-cost monthly EMI options, merit scholarships, and early bird discounts.<br><br>
+                            <button class="btn-course-primary" style="display:inline-block; width:auto; padding:8px 18px;" onclick="connectCounselor()">
+                                <i class="fa-solid fa-file-invoice-dollar"></i> Get Detailed Fee Structure
+                            </button>
+                        </div>
+                    `
+                };
+            }
+
+            return {
+                text: `Welcome to Dotsquares Code AI! Here are our most sought-after tech programs currently enrolling:`,
+                cards: coursesData.slice(0, 3),
+                extra: `
+                    <div style="margin-top: 14px; text-align: center;">
+                        <button class="btn-course-outline" onclick="document.getElementById('catalogModal').style.display='flex'">
+                            <i class="fa-solid fa-layer-group"></i> Explore All 7+ Specialized Programs
+                        </button>
+                    </div>
+                `
+            };
+        }
+
+        function renderCardsHTML(cards) {
+            if (!cards || cards.length === 0) return '';
+            let html = '<div class="courses-display-grid">';
+            cards.forEach(c => {
+                html += `
+                    <div class="course-card-inner">
+                        <div class="course-badge-row">
+                            <span class="course-tag">${c.tag}</span>
+                            <span class="course-duration"><i class="fa-regular fa-clock"></i> ${c.duration}</span>
+                        </div>
+                        <h4 class="course-title">${c.name}</h4>
+                        <p class="course-desc">${c.description}</p>
+                        <div class="course-skills">
+                            ${c.skills.slice(0, 5).map(s => `<span class="skill-pill">${s}</span>`).join('')}
+                        </div>
+                        <div class="course-actions">
+                            <button class="btn-course-primary" onclick="askAboutCourse('${c.name}')">Course Details</button>
+                            <button class="btn-course-outline" onclick="requestSyllabus('${c.name}')">Syllabus PDF</button>
+                        </div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+            return html;
+        }
+
+        function handleSend() {
+            const query = userInput.value.trim();
+            if (!query) return;
+
+            appendMessage('user', query);
+            userInput.value = '';
+
+            showTypingIndicator();
+
+            setTimeout(() => {
+                removeTypingIndicator();
+                const response = generateAIResponse(query);
+                let fullHtml = `<div>${response.text.replace(/\\n/g, '<br>')}</div>`;
+                if (response.cards) fullHtml += renderCardsHTML(response.cards);
+                if (response.extra) fullHtml += response.extra;
+                appendMessage('bot', null, fullHtml);
+            }, 600);
+        }
+
+        sendBtn.addEventListener('click', handleSend);
+        userInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') handleSend();
+        });
+
+        document.querySelectorAll('.prompt-card').forEach(card => {
+            card.addEventListener('click', () => {
+                userInput.value = card.getAttribute('data-prompt');
+                handleSend();
+            });
+        });
+
+        document.querySelectorAll('.suggestion-chip').forEach(chip => {
+            chip.addEventListener('click', () => {
+                userInput.value = chip.getAttribute('data-query');
+                handleSend();
+            });
+        });
+
+        document.querySelectorAll('.category-item').forEach(item => {
+            item.addEventListener('click', () => {
+                document.querySelectorAll('.category-item').forEach(i => i.classList.remove('active'));
+                item.classList.add('active');
+
+                const cat = item.getAttribute('data-category');
+                if (cat === 'all') {
+                    userInput.value = "Show me all available tech courses and programs at Dotsquares";
+                } else {
+                    const match = coursesData.find(c => c.category === cat);
+                    if (match) {
+                        userInput.value = `Tell me all details about ${match.name}`;
+                    } else {
+                        userInput.value = `Tell me about courses in ${item.querySelector('span').textContent}`;
+                    }
+                }
+                handleSend();
+
+                if (window.innerWidth <= 900) {
+                    sidebar.classList.remove('open');
+                }
+            });
+        });
+
+        function resetChat() {
+            chatBody.innerHTML = '';
+            chatBody.appendChild(welcomeContainer);
+            welcomeContainer.style.display = 'block';
+        }
+        clearChatBtn.addEventListener('click', resetChat);
+        newChatBtn.addEventListener('click', resetChat);
+
+        function connectCounselor() {
+            appendMessage('bot', null, `
+                <div style="background: rgba(255, 107, 0, 0.1); border: 1px solid rgba(255, 107, 0, 0.35); border-radius: 10px; padding: 14px;">
+                    <h4 style="color: var(--primary-orange); margin-bottom: 6px;"><i class="fa-solid fa-phone-volume"></i> Dotsquares Career Counselor Assistance</h4>
+                    <p style="font-size: 0.84rem; margin-bottom: 10px; color: var(--text-light);">Our senior academic mentors are standing by to offer custom learning roadmaps, evaluate scholarship discounts, and help you select the right batch.</p>
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                        <button class="btn-course-primary" style="width:auto; padding:7px 16px;" onclick="alert('Connecting to Dotsquares Admissions Hotline: +91 141 6631234')"><i class="fa-solid fa-phone"></i> Call Helpline</button>
+                        <button class="btn-course-outline" onclick="userInput.value='I want to schedule a free live demo class'; handleSend();">Schedule Free Demo Class</button>
+                    </div>
+                </div>
+            `);
+        }
+        counselorBtn.addEventListener('click', connectCounselor);
+
+        window.askAboutCourse = function(courseName) {
+            if (catalogModal.style.display === 'flex') catalogModal.style.display = 'none';
+            userInput.value = `Give me full details, curriculum modules, and career scope for ${courseName}`;
+            handleSend();
+        };
+
+        window.requestSyllabus = function(courseName) {
+            if (catalogModal.style.display === 'flex') catalogModal.style.display = 'none';
+            appendMessage('bot', null, `
+                <div style="background: #151822; border: 1px solid var(--border-subtle); border-radius: 10px; padding: 14px;">
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+                        <i class="fa-solid fa-file-pdf" style="color: var(--primary-orange); font-size: 26px;"></i>
+                        <div>
+                            <strong style="color: var(--text-white); font-size: 0.92rem;">${courseName} - Curriculum Syllabus</strong>
+                            <div style="font-size: 0.74rem; color: var(--text-muted);">Includes module breakdown, hands-on lab exercises, and capstone specifications.</div>
+                        </div>
+                    </div>
+                    <button class="btn-course-primary" style="margin-top: 6px; width: auto; padding: 7px 16px;" onclick="alert('Official curriculum PDF download initiated for: ${courseName}')">
+                        <i class="fa-solid fa-download"></i> Download Complete PDF
+                    </button>
+                </div>
+            `);
+        };
+
+        voiceBtn.addEventListener('click', () => {
+            voiceBtn.style.color = 'var(--primary-orange)';
+            userInput.placeholder = 'Listening... Please speak your course question...';
+            setTimeout(() => {
+                userInput.placeholder = 'Ask Dotsquares Code AI about courses, syllabus, fees, duration...';
+                voiceBtn.style.color = 'var(--text-muted)';
+                userInput.value = 'What are the fees and duration for AI & Generative AI?';
+                handleSend();
+            }, 1800);
+        });
+
+        attachBtn.addEventListener('click', () => {
+            appendMessage('bot', null, `
+                <div style="font-size: 0.85rem;">
+                    <strong style="color: var(--primary-orange);">📄 Profile / Resume Assessment:</strong><br>
+                    You can share your background (Fresher, B.Tech, BCA, Working Professional) or upload your resume for a personalized skills gap analysis and direct course recommendation!
+                </div>
+            `);
+        });
+    </script>
+</body>
+</html>

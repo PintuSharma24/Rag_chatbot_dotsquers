@@ -1,0 +1,335 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#101B2D;
+    --ink-2:#16233A;
+    --paper:#F1F3F4;
+    --paper-2:#E7EAF0;
+    --line:#C7CEDA;
+    --line-soft:#DEE2E9;
+    --text:#1A2130;
+    --muted:#5A6478;
+    --muted-onink:#9AA4BA;
+    --teal:#0F6E56; --teal-light:#1D9E75; --teal-bg:#E1F5EE;
+    --amber:#8A5A0F; --amber-light:#BA7517; --amber-bg:#FAEEDA;
+    --coral:#8A3316; --coral-light:#D85A30; --coral-bg:#FAECE7;
+    --purple:#3C3489; --purple-light:#534AB7; --purple-bg:#EEEDFE;
+    --gray-light:#888780; --gray-bg:#F1EFE8;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--paper);color:var(--text);font-family:'Inter',sans-serif;font-size:15.5px;line-height:1.6;}
+  h1,h2,h3{font-family:'Space Grotesk',sans-serif;margin:0;color:inherit;}
+  p{margin:0;}
+  .page{max-width:980px;margin:0 auto;}
+
+  /* ---------- Hero ---------- */
+  .hero{
+    background:var(--ink);
+    color:#fff;
+    padding:72px 40px 56px;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.045) 1px, transparent 1px);
+    background-size:36px 36px;
+  }
+  .hero-tag{font-size:13px;color:var(--teal-light);font-weight:500;letter-spacing:0.01em;margin-bottom:14px;}
+  .hero h1{font-size:42px;line-height:1.08;font-weight:700;letter-spacing:-0.01em;max-width:680px;}
+  .hero p.lede{margin-top:18px;font-size:16.5px;color:var(--muted-onink);max-width:540px;}
+  .chip-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:28px;}
+  .chip{border:1px solid rgba(255,255,255,0.16);color:#dfe4ee;font-size:13px;padding:6px 12px;border-radius:20px;}
+
+  /* ---------- Section shell ---------- */
+  .section{padding:56px 40px;}
+  .section.on-ink{background:var(--ink-2);color:#fff;}
+  .section-head{max-width:620px;margin-bottom:36px;}
+  .section-eyebrow{font-size:13px;color:var(--teal-light);font-weight:600;margin-bottom:10px;}
+  .on-ink .section-eyebrow{color:var(--teal-light);}
+  .section h2{font-size:27px;font-weight:600;}
+  .section-head p{margin-top:10px;color:var(--muted);font-size:15px;}
+  .on-ink .section-head p{color:var(--muted-onink);}
+
+  /* ---------- Architecture (layered spine) ---------- */
+  .spine-wrap{display:flex;gap:24px;}
+  .spine{width:14px;flex:none;position:relative;}
+  .spine::before{content:"";position:absolute;left:6px;top:6px;bottom:6px;width:2px;background:linear-gradient(var(--purple-light),var(--teal-light),var(--amber-light),var(--coral-light));}
+  .spine .dot{position:absolute;left:0;width:14px;height:14px;border-radius:50%;background:var(--paper);border:2px solid var(--line);}
+  .layers{flex:1;display:flex;flex-direction:column;gap:20px;}
+  .layer-card{border:1px solid var(--line-soft);border-radius:10px;padding:18px 20px;background:#fff;}
+  .layer-card h3{font-size:16px;font-weight:600;margin-bottom:4px;}
+  .layer-card .sub{font-size:13.5px;color:var(--muted);margin-bottom:12px;}
+  .tag-row{display:flex;flex-wrap:wrap;gap:8px;}
+  .tag{font-size:12.5px;padding:4px 10px;border-radius:6px;font-weight:500;}
+  .tag.purple{background:var(--purple-bg);color:var(--purple);}
+  .tag.teal{background:var(--teal-bg);color:var(--teal);}
+  .tag.amber{background:var(--amber-bg);color:var(--amber);}
+  .tag.coral{background:var(--coral-bg);color:var(--coral);}
+
+  /* ---------- Pipeline (numbered sequence) ---------- */
+  .pipeline-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+  .step-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:18px;position:relative;}
+  .step-num{width:26px;height:26px;border-radius:50%;background:var(--teal-light);color:#08221a;font-weight:600;font-size:13px;display:flex;align-items:center;justify-content:center;margin-bottom:12px;}
+  .step-card h3{font-size:15px;font-weight:600;margin-bottom:6px;color:#fff;}
+  .step-card p{font-size:13.5px;color:var(--muted-onink);}
+  .mode-pill{display:inline-block;margin-top:12px;font-size:11.5px;font-weight:600;padding:3px 9px;border-radius:20px;}
+  .mode-pill.manual{background:rgba(255,255,255,0.1);color:#c9cfda;}
+  .mode-pill.ai{background:var(--amber-bg);color:var(--amber);}
+
+  /* ---------- Fallback branch diagram ---------- */
+  .branch-top,.branch-bottom{max-width:340px;margin:0 auto;}
+  .flow-card{border:1px solid var(--line-soft);border-radius:10px;padding:16px 18px;background:#fff;text-align:center;}
+  .flow-card h3{font-size:15px;font-weight:600;}
+  .flow-card p{font-size:13px;color:var(--muted);margin-top:4px;}
+  .flow-arrow{text-align:center;color:var(--muted);font-size:13px;margin:10px 0;}
+  .branch-row{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin:10px 0;}
+  .branch-col{display:flex;flex-direction:column;gap:10px;}
+  .branch-label{font-size:12.5px;font-weight:600;text-align:center;color:var(--muted);}
+  .flow-card.coral{border-color:var(--coral-light);background:var(--coral-bg);}
+  .flow-card.coral h3{color:var(--coral);}
+  .flow-card.amber{border-color:var(--amber-light);background:var(--amber-bg);}
+  .flow-card.amber h3{color:var(--amber);}
+  .flow-card.teal{border-color:var(--teal-light);background:var(--teal-bg);}
+  .flow-card.teal h3{color:var(--teal);}
+
+  /* ---------- Feedback loop (timeline) ---------- */
+  .timeline{position:relative;padding-left:36px;}
+  .timeline::before{content:"";position:absolute;left:11px;top:6px;bottom:6px;width:2px;background:rgba(255,255,255,0.14);}
+  .tl-item{position:relative;padding-bottom:26px;}
+  .tl-item:last-child{padding-bottom:0;}
+  .tl-dot{position:absolute;left:-36px;top:2px;width:24px;height:24px;border-radius:50%;background:var(--ink-2);border:2px solid var(--teal-light);}
+  .tl-item h3{font-size:15.5px;font-weight:600;color:#fff;}
+  .tl-item p{font-size:13.5px;color:var(--muted-onink);margin-top:3px;}
+  .loop-note{margin-top:6px;font-size:13px;color:var(--teal-light);font-weight:500;}
+
+  /* ---------- Footer ---------- */
+  .footer{background:var(--ink);color:var(--muted-onink);padding:36px 40px 44px;}
+  .footer .stack-row{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 20px;}
+  .footer .chip{border-color:rgba(255,255,255,0.14);}
+  .footer .meta{font-size:12.5px;color:#6d7690;}
+
+  @media (max-width:720px){
+    .hero{padding:52px 22px 40px;}
+    .hero h1{font-size:30px;}
+    .section{padding:44px 22px;}
+    .spine-wrap{gap:14px;}
+    .pipeline-grid{grid-template-columns:1fr;}
+    .branch-row{grid-template-columns:1fr;}
+  }
+</style>
+
+<div class="page">
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-tag">DS Academy · AI chatbot system design</div>
+    <h1>How the DS Academy chatbot gets built, end to end</h1>
+    <p class="lede">A retrieval-based AI assistant for Dotsquares Academy — architecture, build workflow, fallback logic, and the feedback loop that keeps it improving.</p>
+    <div class="chip-row">
+      <span class="chip">FastAPI</span>
+      <span class="chip">PostgreSQL + pgvector</span>
+      <span class="chip">Ollama (local LLM)</span>
+      <span class="chip">Docker</span>
+      <span class="chip">HTML / CSS / JS</span>
+    </div>
+  </div>
+
+  <!-- Architecture -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-eyebrow">Architecture</div>
+      <h2>Four layers, one request path</h2>
+      <p>A student's message travels down through these layers and the answer travels back up the same path.</p>
+    </div>
+    <div class="spine-wrap">
+      <div class="spine">
+        <div class="dot" style="top:8px;"></div>
+        <div class="dot" style="top:33%;"></div>
+        <div class="dot" style="top:66%;"></div>
+        <div class="dot" style="bottom:8px;"></div>
+      </div>
+      <div class="layers">
+        <div class="layer-card">
+          <h3>Client layer</h3>
+          <div class="sub">What students and staff actually see</div>
+          <div class="tag-row">
+            <span class="tag purple">Chat widget — public, embedded on the site</span>
+            <span class="tag purple">Admin panel — staff-only, separate login</span>
+          </div>
+        </div>
+        <div class="layer-card">
+          <h3>API layer — FastAPI</h3>
+          <div class="sub">Routes requests to the right service</div>
+          <div class="tag-row">
+            <span class="tag teal">Auth service</span>
+            <span class="tag teal">Chat service — RAG orchestration</span>
+            <span class="tag teal">Admin service — content CRUD</span>
+          </div>
+        </div>
+        <div class="layer-card">
+          <h3>AI processing layer</h3>
+          <div class="sub">The only layer that reasons over text</div>
+          <div class="tag-row">
+            <span class="tag amber">Embedding service — sentence-transformers</span>
+            <span class="tag amber">LLM service — local Ollama, cloud fallback</span>
+          </div>
+        </div>
+        <div class="layer-card">
+          <h3>Data layer</h3>
+          <div class="sub">One PostgreSQL database, pgvector included</div>
+          <div class="tag-row">
+            <span class="tag coral">content_chunks</span>
+            <span class="tag coral">chat_logs</span>
+            <span class="tag coral">admins, chat_sessions</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Build pipeline -->
+  <div class="section on-ink">
+    <div class="section-head">
+      <div class="section-eyebrow">Build workflow</div>
+      <h2>Where the data comes from, and what AI actually does</h2>
+      <p>Most of this is code you write by hand. AI only does two jobs: turning text into vectors, and turning retrieved context into an answer.</p>
+    </div>
+    <div class="pipeline-grid">
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <h3>Collect course data</h3>
+        <p>Pull fees, eligibility, curriculum and placement info from the DS Academy website and brochures.</p>
+        <span class="mode-pill manual">Manual</span>
+      </div>
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <h3>Clean and chunk text</h3>
+        <p>Break each course's content into small, searchable pieces with a script you write.</p>
+        <span class="mode-pill manual">Manual</span>
+      </div>
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <h3>Generate embeddings</h3>
+        <p>A sentence-transformers model converts each chunk into a vector for similarity search.</p>
+        <span class="mode-pill ai">AI-assisted</span>
+      </div>
+      <div class="step-card">
+        <div class="step-num">4</div>
+        <h3>Build the FastAPI backend</h3>
+        <p>Auth, chat and admin routes, database queries — the application logic, hand-coded.</p>
+        <span class="mode-pill manual">Manual</span>
+      </div>
+      <div class="step-card">
+        <div class="step-num">5</div>
+        <h3>Connect the LLM</h3>
+        <p>Ollama reads the retrieved context and the question, then writes the actual answer.</p>
+        <span class="mode-pill ai">AI-assisted</span>
+      </div>
+      <div class="step-card">
+        <div class="step-num">6</div>
+        <h3>Frontend, admin panel, deploy</h3>
+        <p>Chat widget, admin screens, then package everything with Docker Compose.</p>
+        <span class="mode-pill manual">Manual</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fallback logic -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-eyebrow">Fallback and guardrails</div>
+      <h2>What happens when the bot doesn't know</h2>
+      <p>The bot never guesses. If nothing relevant is found, it says so instead of inventing an answer.</p>
+    </div>
+
+    <div class="branch-top">
+      <div class="flow-card">
+        <h3>Search the knowledge base</h3>
+        <p>pgvector similarity check against student's question</p>
+      </div>
+    </div>
+
+    <div class="branch-row">
+      <div class="branch-col">
+        <div class="branch-label">No relevant match</div>
+        <div class="flow-card coral">
+          <h3>Below similarity threshold</h3>
+        </div>
+        <div class="flow-card coral">
+          <h3>Return fallback message</h3>
+          <p>"Please contact DS Academy directly"</p>
+        </div>
+      </div>
+      <div class="branch-col">
+        <div class="branch-label">Match found</div>
+        <div class="flow-card teal">
+          <h3>Above similarity threshold</h3>
+        </div>
+        <div class="flow-card amber">
+          <h3>Generate answer with LLM</h3>
+          <p>Using the retrieved context</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="branch-bottom">
+      <div class="flow-card">
+        <h3>Log the conversation</h3>
+        <p>Marked answered or unanswered, either way</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Feedback loop -->
+  <div class="section on-ink">
+    <div class="section-head">
+      <div class="section-eyebrow">Feedback loop</div>
+      <h2>Closing the loop so the bot keeps improving</h2>
+      <p>Nothing here needs new infrastructure — it reuses chat_logs and the admin panel you already have.</p>
+    </div>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <h3>Bot answers the student</h3>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <h3>Student rates the answer</h3>
+        <p>Simple helpful / not helpful buttons on the widget</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <h3>Admin reviews weak answers</h3>
+        <p>Low ratings and unanswered queries, from the admin panel</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <h3>Admin adds the missing content</h3>
+        <p>New chunk is embedded automatically on save</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <h3>Knowledge base improves</h3>
+        <p class="loop-note">↻ loops back to the search step — the next student gets a better answer</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <h3 style="color:#fff;font-size:16px;">Tech stack</h3>
+    <div class="stack-row">
+      <span class="chip">FastAPI</span>
+      <span class="chip">PostgreSQL</span>
+      <span class="chip">pgvector</span>
+      <span class="chip">sentence-transformers</span>
+      <span class="chip">Ollama</span>
+      <span class="chip">Docker</span>
+      <span class="chip">Git</span>
+      <span class="chip">HTML / CSS / JS</span>
+    </div>
+    <div class="meta">System design summary — DS Academy AI chatbot project · Nikhil</div>
+  </div>
+
+</div>
+

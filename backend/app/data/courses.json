@@ -1,0 +1,79 @@
+[
+  {
+    "id": "mern",
+    "category": "web",
+    "name": "Full-Stack Web Development (MERN & Next.js)",
+    "duration": "4 to 6 Months",
+    "level": "Beginner to Advanced",
+    "skills": ["React 18+", "Next.js", "Node.js", "Express", "MongoDB", "TypeScript", "Redux Toolkit", "REST & GraphQL"],
+    "description": "Master web development from HTML/CSS fundamentals through full-stack architecture, microservices, and client projects.",
+    "fees": "Fee details are not listed in the current course data.",
+    "career": "Full Stack Developer, React Engineer, Node.js Specialist"
+  },
+  {
+    "id": "ai_ml",
+    "category": "ai",
+    "name": "AI, Machine Learning & Generative AI",
+    "duration": "6 Months",
+    "level": "Intermediate to Pro",
+    "skills": ["Python", "PyTorch", "TensorFlow", "NLP", "LangChain", "LLM Fine-tuning", "Vector Databases", "Computer Vision"],
+    "description": "Study machine learning, deep neural networks, and generative AI topics including retrieval-augmented generation.",
+    "fees": "Fee details are not listed in the current course data.",
+    "career": "AI Engineer, Machine Learning Engineer, Data Scientist"
+  },
+  {
+    "id": "python_ds",
+    "category": "python",
+    "name": "Python Full-Stack & Data Analytics",
+    "duration": "4 Months",
+    "level": "Beginner to Pro",
+    "skills": ["Python 3", "Django", "FastAPI", "Pandas", "NumPy", "SQL / PostgreSQL", "PowerBI", "Matplotlib"],
+    "description": "Learn Python backend development with Django and FastAPI alongside data analytics and reporting.",
+    "fees": "Fee details are not listed in the current course data.",
+    "career": "Python Developer, Backend Engineer, Data Analyst"
+  },
+  {
+    "id": "mobile_flutter",
+    "category": "mobile",
+    "name": "Cross-Platform Mobile Apps (Flutter & React Native)",
+    "duration": "3 to 4 Months",
+    "level": "All Skill Levels",
+    "skills": ["Dart", "Flutter SDK", "Bloc / Riverpod", "React Native", "Firebase", "Camera & GPS APIs", "App Store / Play Store"],
+    "description": "Build cross-platform iOS and Android applications using Flutter and React Native.",
+    "fees": "Fee details are not listed in the current course data.",
+    "career": "Mobile App Developer, Flutter Engineer, iOS/Android Lead"
+  },
+  {
+    "id": "devops_cloud",
+    "category": "cloud",
+    "name": "Cloud Computing & DevOps Engineering",
+    "duration": "4 Months",
+    "level": "Intermediate",
+    "skills": ["AWS Core Services", "Docker", "Kubernetes", "Terraform", "GitHub Actions", "Jenkins", "Linux / Bash"],
+    "description": "Study cloud architecture, containerization, Kubernetes, infrastructure as code, and CI/CD pipelines.",
+    "fees": "Fee details are not listed in the current course data.",
+    "career": "DevOps Engineer, Cloud Architect, Site Reliability Engineer"
+  },
+  {
+    "id": "ui_ux",
+    "category": "uiux",
+    "name": "UI/UX & Product Design Masterclass",
+    "duration": "3 Months",
+    "level": "Beginner to Intermediate",
+    "skills": ["Figma", "Design Systems", "User Research", "Wireframing", "Micro-interactions", "Design Tokens", "Usability Testing"],
+    "description": "Learn user research, design systems, prototyping, and usability testing for digital products.",
+    "fees": "Fee details are not listed in the current course data.",
+    "career": "Product Designer, UI/UX Designer, UX Researcher"
+  },
+  {
+    "id": "qa_automation",
+    "category": "qa",
+    "name": "Software QA & Test Automation Mastery",
+    "duration": "3 Months",
+    "level": "Beginner to Intermediate",
+    "skills": ["Selenium WebDriver", "Java / Python", "TestNG", "Postman API Testing", "Cucumber BDD", "Jira", "Performance Testing"],
+    "description": "Learn software testing, API verification, automation, bug tracking, and quality practices.",
+    "fees": "Fee details are not listed in the current course data.",
+    "career": "Automation QA Engineer, SDET, Quality Analyst"
+  }
+]
